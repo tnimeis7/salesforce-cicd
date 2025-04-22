@@ -22,10 +22,9 @@ jobs:
             - name: Check Node.js version
               run: node -v
 
-            - name: Remove package-lock.json and install dependencies
+            - name: Install dependencies
               run: |
-                rm -f package-lock.json
-                npm install --legacy-peer-deps  # ใช้ --legacy-peer-deps หากเจอปัญหากับ peer dependencies
+                npm install --no-audit --legacy-peer-deps
 
             - name: 'Checkout source code'
               uses: actions/checkout@v3
@@ -61,7 +60,7 @@ jobs:
                 sudo apt install default-jdk
 
             - name: 'Installing SFDX scanner'
-              run: npm install @salesforce/sfdx-scanner --save-dev
+              run: sfdx plugins:install @salesforce/sfdx-scanner
 
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash

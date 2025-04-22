@@ -4,7 +4,7 @@ name: Deploy integration branch to staging/uat org
 # Definition when the workflow should run
 on:
     push:
-      branches: [ integration ]
+      branches: [ staging ]
       paths:
         - 'force-app/**'
             

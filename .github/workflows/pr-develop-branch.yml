@@ -3,30 +3,20 @@ name: Validate PR on develop branch
 on:
     pull_request:
       types: [opened, synchronize]
-      branches: [development]
+      branches: [ development ]
       paths:
         - 'force-app/**'
+            
 
+# Jobs to be executed when the above conditions are met
 jobs:
     validate-deployment-on-develop-org:
         runs-on: ubuntu-latest
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v4
               with:
-                node-version: '20.x'
-
-            - name: Clear Node.js cache
-              run: npm cache clean --force
-
-            - name: Check Node.js version
-              run: node -v
-
-            - name: Install dependencies
-              run: |
-                pwd
-                ls -la
-                npm install --no-audit --legacy-peer-deps
+                node-version: '20'
 
             - name: 'Checkout source code'
               uses: actions/checkout@v3
@@ -42,7 +32,7 @@ jobs:
                   node ./parsePR.js              
                   TESTS=$(cat testsToRun.txt)       
                   echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
-
+                  
             - name: 'Install Salesforce CLI'
               run: |
                   wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
@@ -100,4 +90,4 @@ jobs:
                   sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
 
             - name: 'Deploy destructive changes (if any)'
-              run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings
+              run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 

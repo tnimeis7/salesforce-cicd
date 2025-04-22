@@ -3,7 +3,7 @@ name: Validate PR on develop branch
 on:
     pull_request:
       types: [opened, synchronize]
-      branches: [ development ]
+      branches: [development]
       paths:
         - 'force-app/**'
 
@@ -67,10 +67,6 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-
-            - name: Install @typescript-eslint/parser
-              run: |
-                yarn add @typescript-eslint/parser@5.0.0 --non-interactive
 
             - name: 'Installing SFDX scanner'
               run: sfdx plugins:install @salesforce/sfdx-scanner

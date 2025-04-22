@@ -1,5 +1,5 @@
 # Unique name for this workflow
-name: Deploy integration branch to integration orgs
+name: Deploy integration branch to integration and staging/uat orgs
 
 # Definition when the workflow should run
 on:
@@ -11,7 +11,7 @@ on:
 
 # Jobs to be executed
 jobs:
-    deploy-branch-to-int-orgs:
+    deploy-branch-to-int-and-staging-orgs:
         runs-on: ubuntu-latest
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
@@ -41,6 +41,7 @@ jobs:
               shell: bash
               run: |
                   echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
+                  echo ${{ secrets.SFDX_STAGING_URL}} > ./SFDX_STAGING_URL.txt
 
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 

@@ -52,14 +52,14 @@ jobs:
                 sudo apt install default-jdk
             
             - name: 'Check Node.js Path'
-  run: which node
+              run: which node
 
-- name: 'Force Use Node.js 20'
-  run: |
-    echo "Setting up Node.js 20 in PATH"
-    export NODE_PATH=$(dirname $(which node))/bin:$NODE_PATH
-    echo "New Node.js version: $(node -v)"
-    echo "New Node.js path: $(which node)"
+            - name: 'Force Use Node.js 20'
+              run: |
+                echo "Setting up Node.js 20 in PATH"
+                export NODE_PATH=$(dirname $(which node))/bin:$NODE_PATH
+                echo "New Node.js version: $(node -v)"
+                echo "New Node.js path: $(which node)"
 
             - name: 'Installing SFDX scanner'
               run: |

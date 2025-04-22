@@ -49,5 +49,8 @@
   "bugs": {
     "url": "https://github.com/tnimeis7/salesforce-cicd/issues"
   },
-  "homepage": "https://github.com/tnimeis7/salesforce-cicd#readme"
+  "homepage": "https://github.com/tnimeis7/salesforce-cicd#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }

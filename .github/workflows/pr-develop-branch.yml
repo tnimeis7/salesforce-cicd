@@ -51,16 +51,6 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-            
-            - name: 'Check Node.js Path'
-              run: which node
-
-            - name: 'Force Use Node.js 20 (Alternative)'
-              run: |
-                echo "Setting up Node.js 20 in PATH"
-                export PATH="/opt/hostedtoolcache/node/20.x/x64/bin:$PATH" # ระบุ path โดยตรง (ตรวจสอบ path จริงอีกครั้ง)
-                echo "New Node.js version: $(node -v)"
-                echo "New Node.js path: $(which node)"
 
             - name: 'Installing SFDX scanner'
               run: |

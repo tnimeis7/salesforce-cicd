@@ -52,7 +52,9 @@ jobs:
                 sudo apt install default-jdk
 
             - name: 'Installing SFDX scanner'
-              run: sfdx plugins:install @salesforce/sfdx-scanner
+              run: |
+                  echo "Installing SFDX scanner with Node.js $(node -v)"
+                  sfdx plugins:install @salesforce/sfdx-scanner
 
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash

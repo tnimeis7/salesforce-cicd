@@ -6,7 +6,7 @@ on:
       branches: [ development ]
       paths:
         - 'force-app/**'
-            
+
 jobs:
     validate-deployment-on-develop-org:
         runs-on: ubuntu-latest
@@ -15,6 +15,12 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                 node-version: '20.0.0'
+
+            - name: 'Check Node.js version'
+              run: node -v
+
+            - name: 'Clear Yarn cache'
+              run: yarn cache clean
 
             - name: 'Checkout source code'
               uses: actions/checkout@v3
@@ -30,7 +36,6 @@ jobs:
                   node ./parsePR.js              
                   TESTS=$(cat testsToRun.txt)       
                   echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
-                  
 
             - name: 'Install Salesforce CLI'
               run: |

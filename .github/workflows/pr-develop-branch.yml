@@ -22,18 +22,10 @@ jobs:
             - name: Check Node.js version
               run: node -v
 
-            - name: Clear Yarn cache
-              run: yarn cache clean
-
-            - name: Install Yarn (latest version)
+            - name: Remove package-lock.json and install dependencies
               run: |
-                npm install -g yarn
-                yarn --version
-
-            - name: Remove yarn.lock and install dependencies
-              run: |
-                rm -f yarn.lock
-                yarn install --non-interactive
+                rm -f package-lock.json
+                npm install --legacy-peer-deps  # ใช้ --legacy-peer-deps หากเจอปัญหากับ peer dependencies
 
             - name: 'Checkout source code'
               uses: actions/checkout@v3
@@ -69,7 +61,7 @@ jobs:
                 sudo apt install default-jdk
 
             - name: 'Installing SFDX scanner'
-              run: sfdx plugins:install @salesforce/sfdx-scanner
+              run: npm install @salesforce/sfdx-scanner --save-dev
 
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash

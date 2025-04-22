@@ -24,6 +24,7 @@ jobs:
 
             - name: Install dependencies
               run: |
+                pwd
                 ls -la
                 npm install --no-audit --legacy-peer-deps
 

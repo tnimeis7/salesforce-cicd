@@ -70,7 +70,7 @@ jobs:
 
             - name: Install @typescript-eslint/parser
               run: |
-                yarn add @typescript-eslint/parser@7.18.0 --non-interactive
+                yarn add @typescript-eslint/parser@5.0.0 --non-interactive
 
             - name: 'Installing SFDX scanner'
               run: sfdx plugins:install @salesforce/sfdx-scanner

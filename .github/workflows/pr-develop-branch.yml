@@ -24,6 +24,7 @@ jobs:
 
             - name: Install dependencies
               run: |
+                ls -la
                 npm install --no-audit --legacy-peer-deps
 
             - name: 'Checkout source code'

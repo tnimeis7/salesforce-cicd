@@ -6,7 +6,6 @@ on:
       branches: [ development ]
       paths:
         - 'force-app/**'
-            
 
 # Jobs to be executed when the above conditions are met
 jobs:
@@ -14,9 +13,16 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
-            - uses: actions/setup-node@v4
+            - name: 'Setup Node.js 20'
+              uses: actions/setup-node@v4
               with:
                 node-version: '20'
+                cache: 'npm'
+
+            - name: 'Check Node.js Version (After Setup)'
+              run: |
+                node -v
+                which node
 
             - name: 'Checkout source code'
               uses: actions/checkout@v3
@@ -26,45 +32,39 @@ jobs:
             - name: 'Read PR Body'
               env:
                 PR_BODY: ${{github.event.pull_request.body}}
-
               run: |
-                  echo $PR_BODY > ./pr_body.txt
-                  node ./parsePR.js              
-                  TESTS=$(cat testsToRun.txt)       
+                  echo "$PR_BODY" > ./pr_body.txt
+                  node ./parsePR.js
+                  TESTS=$(cat testsToRun.txt)
                   echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
-                  
+
             - name: 'Install Salesforce CLI'
               run: |
                   wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
-                  mkdir ~/sfdx
+                  mkdir -p ~/sfdx
                   tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
 
+            - name: 'Check Node.js Version (Before Scanner)'
+              run: |
+                node -v
+                which node
+
             - name: 'Installing sfdx git delta'
-              run: | 
+              run: |
                   echo y | sfdx plugins:install sfdx-git-delta
-                  sfdx plugins 
+                  sfdx plugins
 
             - name: 'Installing java'
               run: |
                 sudo apt-get update
                 sudo apt install default-jdk
-            
-            - name: 'Check Node.js Path'
-              run: which node
-
-            - name: 'Force Use Node.js 20'
-              run: |
-                echo "Setting up Node.js 20 in PATH"
-                export NODE_PATH=$(dirname $(which node))/bin:$NODE_PATH
-                echo "New Node.js version: $(node -v)"
-                echo "New Node.js path: $(which node)"
 
             - name: 'Installing SFDX scanner'
               run: |
                   echo "Installing SFDX scanner with Node.js $(node -v)"
-                  sfdx plugins:install @salesforce/sfdx-scanner
+                  sfdx plugins:install --force @salesforce/sfdx-scanner
 
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash
